@@ -4,24 +4,17 @@ using UnityEngine;
 
 public class S_charaController : MonoBehaviour
 {
-    public float moveSpeed = 5f;           
-    public float rotationSpeed = 360f;     
-    public float frictionFactor = 0.9f;    
-    public float noiseFactor = 1f;    
-    public LayerMask floorLayerMask;
-    public LayerMask wallLayer;
-    public AudioSource audioSource;       
+    [SerializeField] private float moveSpeed = 5f;           
+    [SerializeField] private float rotationSpeed = 360f;     
+    [SerializeField] private float frictionFactor = 0.9f;    
+    [SerializeField] private float noiseFactor = 1f;    
+    [SerializeField] private LayerMask floorLayerMask;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private AudioSource audioSource;       
 
     private Vector3 moveDirection = Vector3.zero;
-    private float currentSpeed = 0f;
-    private float currentNoise = 0f;
-
-    private Rigidbody rb;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();    // Assurez-vous que le joueur a un Rigidbody
-    }
+    [SerializeField] private float currentSpeed = 0f;
+    public float currentNoise = 0f;
 
     void Update()
     {
@@ -35,9 +28,9 @@ public class S_charaController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");      // W/S ou Z/S
 
         moveDirection = new Vector3(horizontal, 0, vertical).normalized;
-
         if (moveDirection.magnitude >= 0.1f)
         {
+            CheckGroundType();
             float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
 
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, 0.2f);
@@ -45,9 +38,10 @@ public class S_charaController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, angle, 0);
 
             currentSpeed = moveSpeed * (moveDirection.magnitude);
+            currentSpeed *= frictionFactor;
             if (!IsCollidingWithWall())
             {
-                transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+                transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
             }
         }
         else
@@ -68,7 +62,10 @@ public class S_charaController : MonoBehaviour
         {
             audioSource.volume = currentNoise;
         }
+    }
 
+    private void CheckGroundType()
+    {
         Ray ray = new Ray(transform.position, Vector3.down);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 1f, floorLayerMask))
@@ -77,9 +74,11 @@ public class S_charaController : MonoBehaviour
             switch (surfaceTag)
             {
                 case "Carpet":
+                    frictionFactor = 0.2f;
                     noiseFactor = 0.5f;  // Moins de bruit sur la moquette
                     break;
                 case "Tile":
+                    frictionFactor = 0.9f;
                     noiseFactor = 1.5f;  // Plus de bruit sur le carrelage
                     break;
                 default:
@@ -88,6 +87,7 @@ public class S_charaController : MonoBehaviour
             }
         }
     }
+
     bool IsCollidingWithWall()
     {
         RaycastHit hit;
