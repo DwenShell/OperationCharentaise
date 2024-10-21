@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class S_charaController : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class S_charaController : MonoBehaviour
 
             currentSpeed = moveSpeed * (moveDirection.magnitude);
             currentSpeed *= frictionFactor;
-            if (!IsCollidingWithWall())
+            if (!IsCollidingInFrontOfWhat(1))
             {
                 transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
             }
@@ -47,7 +48,7 @@ public class S_charaController : MonoBehaviour
         else
         {
             currentSpeed *= frictionFactor;
-            if (!IsCollidingWithWall())
+            if (!IsCollidingInFrontOfWhat(1))
             {
                 transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
             }
@@ -56,7 +57,7 @@ public class S_charaController : MonoBehaviour
 
     void HandleNoise()
     {
-        currentNoise = Mathf.Clamp(currentSpeed * noiseFactor, 0, 1);
+        currentNoise = Mathf.Clamp(currentSpeed * noiseFactor, 0, 2);
 
         if (audioSource != null)
         {
@@ -75,11 +76,15 @@ public class S_charaController : MonoBehaviour
             {
                 case "Carpet":
                     frictionFactor = 0.2f;
-                    noiseFactor = 0.5f;  // Moins de bruit sur la moquette
+                    noiseFactor = 0.5f;
                     break;
                 case "Tile":
                     frictionFactor = 0.9f;
-                    noiseFactor = 1.5f;  // Plus de bruit sur le carrelage
+                    noiseFactor = 1.5f; 
+                    break;
+                case "Lino":
+                    frictionFactor = 0.5f;
+                    noiseFactor = 1f;
                     break;
                 default:
                     noiseFactor = 1f;
@@ -88,13 +93,31 @@ public class S_charaController : MonoBehaviour
         }
     }
 
-    bool IsCollidingWithWall()
+    bool IsCollidingInFrontOfWhat(int typeOfCollideAsk)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, moveDirection, out hit, 0.5f, wallLayer))
+        switch (typeOfCollideAsk)
         {
-            return true; // Collision détectée avec un mur
+            case 1:
+                if (Physics.Raycast(transform.position, moveDirection, out hit, 0.5f, wallLayer))
+                {
+                    return true;
+                }
+                return false;
+            case 2:
+                if (Physics.Raycast(transform.position, moveDirection, out hit, 1.5f, wallLayer))
+                {
+                    if(hit.collider.tag == "Pickable")
+                    return true;
+                }
+                return false;
+            default: 
+                return false;
         }
-        return false;
+
+    }
+    public float GetCurrentNoiseLevel()
+    {
+        return Mathf.Clamp(noiseFactor, 0f, 2f);
     }
 }
