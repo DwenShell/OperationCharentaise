@@ -207,7 +207,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1416924550}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -261,8 +261,9 @@ GameObject:
   - component: {fileID: 207242954}
   - component: {fileID: 207242953}
   - component: {fileID: 207242952}
+  - component: {fileID: 207242956}
   m_Layer: 8
-  m_Name: Key (2)
+  m_Name: SoundObject2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,6 +355,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &207242956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207242951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2105b9fe27a64ea496753e64b3284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseObjectFactor: 0.2
 --- !u!1 &215219957
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,8 +380,9 @@ GameObject:
   - component: {fileID: 215219960}
   - component: {fileID: 215219959}
   - component: {fileID: 215219958}
+  - component: {fileID: 215219962}
   m_Layer: 8
-  m_Name: Key (1)
+  m_Name: SoundObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -459,6 +474,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &215219962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215219957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2105b9fe27a64ea496753e64b3284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseObjectFactor: 0.7
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalNoiseFactor: 0
   playerCharacter: {fileID: 1499510830}
-  detectionRadius: 1
+  detectionRadius: 5
   detectionLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -1483,14 +1511,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noisePlaySlider: {fileID: 1619145858}
-  noiseAmbSlider: {fileID: 0}
+  noiseAmbSlider: {fileID: 5799070}
   player: {fileID: 1499510835}
-  noiseManager: {fileID: 0}
+  noiseManager: {fileID: 912049784}
   lerpSpeed: 5
   noiseFluctuation: 0.2
   fluctuationSpeed: 20
   playerNoise: 0
-  targetNoise: 0
+  targetPlayNoise: 0
+  ambNoise: 0
+  targetAmbNoise: 0
 --- !u!1 &1110566945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,7 +1533,7 @@ GameObject:
   - component: {fileID: 1110566948}
   - component: {fileID: 1110566947}
   - component: {fileID: 1110566946}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2735,8 +2765,9 @@ GameObject:
   - component: {fileID: 2117176245}
   - component: {fileID: 2117176244}
   - component: {fileID: 2117176243}
+  - component: {fileID: 2117176247}
   m_Layer: 8
-  m_Name: Key (3)
+  m_Name: SoundObject3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2828,6 +2859,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2117176247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117176242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2105b9fe27a64ea496753e64b3284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseObjectFactor: 1.4
 --- !u!1 &2146536504
 GameObject:
   m_ObjectHideFlags: 0
