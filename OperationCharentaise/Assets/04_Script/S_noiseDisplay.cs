@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class S_noiseDisplay : MonoBehaviour
 {
-    public Slider noiseSlider;       
+    public Slider noisePlaySlider;
+    public Slider noiseAmbSlider;
     public S_charaController player; 
+    public S_noiseManager noiseManager;
 
     public float lerpSpeed = 2f;         
     public float noiseFluctuation = 0.05f; 
     public float fluctuationSpeed = 0.1f;  
 
-    private float playerNoise;
-    private float targetNoise;        
+    [SerializeField] private float playerNoise;
+    [SerializeField] private float targetNoise;        
 
     void Start()
     {
@@ -31,6 +33,6 @@ public class S_noiseDisplay : MonoBehaviour
             playerNoise += Mathf.PerlinNoise(Time.time * fluctuationSpeed, 0f) * noiseFluctuation - (noiseFluctuation / 2);
         }
 
-        noiseSlider.value = Mathf.Clamp(playerNoise, 0f, 2f);
+        noisePlaySlider.value = Mathf.Clamp(playerNoise, 0f, 2f);
     }
 }

@@ -118,6 +118,6 @@ public class S_charaController : MonoBehaviour
     }
     public float GetCurrentNoiseLevel()
     {
-        return Mathf.Clamp(noiseFactor, 0f, 2f);
+        return Mathf.Clamp(currentNoise, 0f, 2f);
     }
 }
