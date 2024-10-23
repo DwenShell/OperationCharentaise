@@ -57,7 +57,7 @@ public class S_charaController : MonoBehaviour
 
     void HandleNoise()
     {
-        currentNoise = Mathf.Clamp(currentSpeed * noiseFactor, 0, 2);
+        currentNoise = Mathf.Clamp((currentSpeed*0.5f) * noiseFactor, 0f, 2f);
 
         if (audioSource != null)
         {

@@ -27,28 +27,23 @@ public class S_noiseDisplay : MonoBehaviour
 
     void Update()
     {
-        targetPlayNoise = player.GetCurrentNoiseLevel();
+        playerNoise = UpdateNoise(playerNoise, player.GetCurrentNoiseLevel(), noisePlaySlider);
 
-        playerNoise = Mathf.Lerp(playerNoise, targetPlayNoise, Time.deltaTime * lerpSpeed);
+        ambNoise = UpdateNoise(ambNoise, noiseManager.GetCurrentNoiseLevel(), noiseAmbSlider);
+        if(playerNoise > ambNoise) { noiseManager.isSoundable = true; } else { noiseManager.isSoundable = false;}
+    }
 
-        if (Mathf.Abs(targetPlayNoise - playerNoise) < 0.01f)
+    private float UpdateNoise(float currentNoise, float targetNoise, Slider noiseSlider)
+    {
+        currentNoise = Mathf.Lerp(currentNoise, targetNoise, Time.deltaTime * lerpSpeed);
+
+        if (Mathf.Abs(targetNoise - currentNoise) < 0.01f)
         {
-            playerNoise += Mathf.PerlinNoise(Time.time * fluctuationSpeed, 0f) * noiseFluctuation - (noiseFluctuation / 2);
+            currentNoise += Mathf.PerlinNoise(Time.time * fluctuationSpeed, 0f) * noiseFluctuation - (noiseFluctuation / 2);
         }
 
-        noisePlaySlider.value = Mathf.Clamp(playerNoise, 0f, 2f);
-        
-        //===========================
-        
-        targetAmbNoise = noiseManager.GetCurrentNoiseLevel();
+        noiseSlider.value = Mathf.Clamp(currentNoise, 0f, 2f);
 
-        ambNoise = Mathf.Lerp(ambNoise, targetAmbNoise, Time.deltaTime * lerpSpeed);
-
-        if (Mathf.Abs(targetAmbNoise - ambNoise) < 0.01f)
-        {
-            ambNoise += Mathf.PerlinNoise(Time.time * fluctuationSpeed, 0f) * noiseFluctuation - (noiseFluctuation / 2);
-        }
-
-        noiseAmbSlider.value = Mathf.Clamp(ambNoise, 0f, 2f);
+        return currentNoise;
     }
 }

@@ -6,20 +6,23 @@ public class S_noiseManager : MonoBehaviour
 {
     [SerializeField] private float globalNoiseFactor;
     [SerializeField] private GameObject playerCharacter;
-    [SerializeField] private float detectionRadius = 1f; 
-    [SerializeField] private LayerMask detectionLayer;
+    [SerializeField] private float detectionRadius = 1f;
+    [SerializeField] private LayerMask soundDetectionLayer;
+    [SerializeField] private LayerMask chaserLayer;
+    public bool isSoundable;
 
     private List<Collider> detectedColliders = new List<Collider>();
+    private Collider[] newHitColliders;
+
+    private List<S_playerChaser> chaserList = new List<S_playerChaser>();
+    private List<S_playerChaser> previousChaserList = new List<S_playerChaser>();
+    private Collider[] newChaserColliders;
 
     void Update()
     {
-        // Initialisation du niveau de bruit global à 0 au début de chaque Update
         globalNoiseFactor = 0f;
 
-        // Détection des nouveaux objets dans le rayon
-        Collider[] newHitColliders = Physics.OverlapSphere(playerCharacter.transform.position, detectionRadius, detectionLayer);
-
-        // Mise à jour de la liste des objets détectés
+        newHitColliders = Physics.OverlapSphere(playerCharacter.transform.position, detectionRadius, soundDetectionLayer);
         detectedColliders.RemoveAll(collider => !IsInOverlapSphere(collider, newHitColliders));
 
         foreach (Collider collider in newHitColliders)
@@ -30,7 +33,6 @@ public class S_noiseManager : MonoBehaviour
             }
         }
 
-        // Calcul du globalNoiseFactor en fonction des objets toujours dans la zone
         foreach (Collider col in detectedColliders)
         {
             S_soundEmiter soundEmiter = col.gameObject.GetComponent<S_soundEmiter>();
@@ -40,14 +42,9 @@ public class S_noiseManager : MonoBehaviour
             }
         }
 
-        // Debug : Afficher les objets détectés
-        foreach (Collider col in detectedColliders)
-        {
-            Debug.Log(col.gameObject.name);
-        }
+        UpdateChasers();
     }
 
-    // Vérifie si un collider est toujours dans la sphère de détection
     private bool IsInOverlapSphere(Collider collider, Collider[] hitColliders)
     {
         foreach (Collider hitCollider in hitColliders)
@@ -57,7 +54,36 @@ public class S_noiseManager : MonoBehaviour
                 return true;
             }
         }
-        return false; // L'objet n'est plus dans la zone
+        return false;
+    }
+
+    private void UpdateChasers()
+    {
+        newChaserColliders = Physics.OverlapSphere(playerCharacter.transform.position, detectionRadius, chaserLayer);
+
+        previousChaserList.Clear();
+        previousChaserList.AddRange(chaserList);
+
+        chaserList.Clear(); 
+
+        foreach (Collider chaserCollider in newChaserColliders)
+        {
+            S_playerChaser chaser = chaserCollider.GetComponent<S_playerChaser>();
+            if (chaser != null)
+            {
+                chaserList.Add(chaser); 
+                chaser.isPlayerSoundable = true;  
+                chaser.player = playerCharacter.transform;
+            }
+        }
+
+        foreach (S_playerChaser prevChaser in previousChaserList)
+        {
+            if (!chaserList.Contains(prevChaser))
+            {
+                prevChaser.isPlayerSoundable = false;
+            }
+        }
     }
 
     public float GetCurrentNoiseLevel()
