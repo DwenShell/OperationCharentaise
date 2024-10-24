@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,9 @@ public class S_charaController : MonoBehaviour
     [SerializeField] private float noiseFactor = 1f;    
     [SerializeField] private LayerMask floorLayerMask;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private AudioSource audioSource;       
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private Transform spawnPoint;
 
     private Vector3 moveDirection = Vector3.zero;
     [SerializeField] private float currentSpeed = 0f;
@@ -119,5 +122,10 @@ public class S_charaController : MonoBehaviour
     public float GetCurrentNoiseLevel()
     {
         return Mathf.Clamp(currentNoise, 0f, 2f);
+    }
+    public void playerIsCapture()
+    {
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
     }
 }

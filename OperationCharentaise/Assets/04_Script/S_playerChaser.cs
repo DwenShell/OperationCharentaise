@@ -27,11 +27,13 @@ public class S_playerChaser : MonoBehaviour
     public float wanderingRadius = 10f;     
     public float idleWaitTime = 5f;         
 
-    private Coroutine wanderingCoroutine;   
+    private Coroutine wanderingCoroutine;
+    private float distanceToPlayer;
 
     void Start()
     {
-        originalSpeed = agent.speed; 
+        originalSpeed = agent.speed;
+        distanceToPlayer = stopChasingDistance * 2;
 
         if (hasFixedPosition)
         {
@@ -43,12 +45,11 @@ public class S_playerChaser : MonoBehaviour
     {
         if (player != null && isPlayerSoundable)
         {
-            playerPosition = player.position;
-            float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+            checkMinimuPlayerDistance();
 
             if (distanceToPlayer > stopChasingDistance)
             {
-                agent.SetDestination(playerPosition); 
+                agent.SetDestination(playerPosition);
                 isChasing = true;
 
                 if (wanderingCoroutine != null)
@@ -65,6 +66,18 @@ public class S_playerChaser : MonoBehaviour
         else if (!isSlowingDown)
         {
             StartCoroutine(SlowDownBeforeStopping());
+        }
+        if (player != null) checkMinimuPlayerDistance();
+    }
+
+    private void checkMinimuPlayerDistance()
+    {
+        playerPosition = player.position;
+        distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+        if (distanceToPlayer <= stopChasingDistance) 
+        {
+            agent.ResetPath();
+            player.GetComponent<S_charaController>().playerIsCapture();
         }
     }
 

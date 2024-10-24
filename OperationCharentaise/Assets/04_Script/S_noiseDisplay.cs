@@ -41,8 +41,9 @@ public class S_noiseDisplay : MonoBehaviour
         {
             currentNoise += Mathf.PerlinNoise(Time.time * fluctuationSpeed, 0f) * noiseFluctuation - (noiseFluctuation / 2);
         }
-
-        noiseSlider.value = Mathf.Clamp(currentNoise, 0f, 2f);
+        float minClamp = 0f;
+        if (noiseSlider.gameObject.name == "AmbientSound") minClamp = 0.1f;
+        noiseSlider.value = Mathf.Clamp(currentNoise, minClamp, 2f);
 
         return currentNoise;
     }
