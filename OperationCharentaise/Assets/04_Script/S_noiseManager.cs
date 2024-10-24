@@ -72,7 +72,7 @@ public class S_noiseManager : MonoBehaviour
             if (chaser != null)
             {
                 chaserList.Add(chaser); 
-                chaser.isPlayerSoundable = true;  
+                chaser.isPlayerSoundable = isSoundable;  
                 chaser.player = playerCharacter.transform;
             }
         }
