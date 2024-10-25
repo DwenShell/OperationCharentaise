@@ -15,6 +15,7 @@ public class S_charaController : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform rayOrigin;
 
     private Vector3 moveDirection = Vector3.zero;
     [SerializeField] private float currentSpeed = 0f;
@@ -70,24 +71,30 @@ public class S_charaController : MonoBehaviour
 
     private void CheckGroundType()
     {
-        Ray ray = new Ray(transform.position, Vector3.down);
+        Debug.Log("Check Ground");
+        Ray ray = new Ray(rayOrigin.position, Vector3.down);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1f, floorLayerMask))
+        if (Physics.Raycast(ray, out hit, 0.8f, floorLayerMask))
         {
             string surfaceTag = hit.collider.tag;
+            Debug.Log(surfaceTag);
             switch (surfaceTag)
             {
                 case "Carpet":
-                    frictionFactor = 0.2f;
-                    noiseFactor = 0.5f;
+                    frictionFactor = 0.1f;
+                    noiseFactor = 0.2f;
                     break;
                 case "Tile":
                     frictionFactor = 0.9f;
-                    noiseFactor = 1.5f; 
+                    noiseFactor = 1.8f; 
                     break;
                 case "Lino":
+                    frictionFactor = 0.3f;
+                    noiseFactor = 0.9f;
+                    break;
+                case "Classique":
                     frictionFactor = 0.5f;
-                    noiseFactor = 1f;
+                    noiseFactor = 1.3f;
                     break;
                 default:
                     noiseFactor = 1f;
