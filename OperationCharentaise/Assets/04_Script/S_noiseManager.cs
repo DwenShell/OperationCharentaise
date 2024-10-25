@@ -90,4 +90,9 @@ public class S_noiseManager : MonoBehaviour
     {
         return Mathf.Clamp(globalNoiseFactor, 0f, 2f);
     }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(playerCharacter.transform.position, detectionRadius);
+    }
 }

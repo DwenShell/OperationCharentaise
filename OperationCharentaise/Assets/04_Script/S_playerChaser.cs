@@ -124,4 +124,17 @@ public class S_playerChaser : MonoBehaviour
             yield return new WaitForSeconds(idleWaitTime);
         }
     }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        if(hasFixedPosition)
+        {
+            Gizmos.DrawWireSphere(fixedPosition, 1);
+        }
+        else
+        {
+            Gizmos.DrawWireSphere(wanderingCenter, wanderingRadius);
+        }
+        
+    }
 }
