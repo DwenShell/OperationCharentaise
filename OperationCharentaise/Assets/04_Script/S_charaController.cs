@@ -21,6 +21,10 @@ public class S_charaController : MonoBehaviour
     [SerializeField] private float currentSpeed = 0f;
     public float currentNoise = 0f;
 
+    public bool isHoldingKey;
+    public bool isHoldingLighter;
+    private GameObject keyPNG;
+    private GameObject LighterPNG;
     void Update()
     {
         HandleMovement();
@@ -134,5 +138,15 @@ public class S_charaController : MonoBehaviour
     {
         transform.position = spawnPoint.position;
         transform.rotation = spawnPoint.rotation;
+    }
+    public void getOrGiveObject(int objectCode, bool getOrGive)
+    {
+        if(objectCode == 1)
+        {
+            isHoldingKey = getOrGive;
+        } else if(objectCode == 2)
+        {
+            isHoldingLighter = getOrGive;
+        }
     }
 }
