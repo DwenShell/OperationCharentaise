@@ -13,7 +13,11 @@ public class S_playerTeleporter : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isTeleporting)
         {
-            StartCoroutine(TeleportPlayer(other.transform));
+            if (other.GetComponent<S_charaController>().isHoldingKey)
+            {
+                other.GetComponent<S_charaController>().getOrGiveObject(1, false);
+                StartCoroutine(TeleportPlayer(other.transform));
+            }
         }
     }
 

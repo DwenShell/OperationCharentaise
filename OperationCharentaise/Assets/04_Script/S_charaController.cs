@@ -23,8 +23,10 @@ public class S_charaController : MonoBehaviour
 
     public bool isHoldingKey;
     public bool isHoldingLighter;
-    private GameObject keyPNG;
-    private GameObject LighterPNG;
+    [SerializeField] private GameObject keyPNG;
+    [SerializeField] private GameObject LighterPNG;
+
+    public Animator playerAnimator;
     void Update()
     {
         HandleMovement();
@@ -61,6 +63,10 @@ public class S_charaController : MonoBehaviour
                 transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
             }
         }
+        if (currentSpeed > 0)
+            playerAnimator.SetBool("Move", true);
+        else
+            playerAnimator.SetBool("Move", false);
     }
 
     void HandleNoise()
@@ -144,9 +150,11 @@ public class S_charaController : MonoBehaviour
         if(objectCode == 1)
         {
             isHoldingKey = getOrGive;
+            keyPNG.SetActive(getOrGive);
         } else if(objectCode == 2)
         {
             isHoldingLighter = getOrGive;
+            LighterPNG.SetActive(getOrGive);
         }
     }
 }

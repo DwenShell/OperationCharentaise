@@ -30,6 +30,8 @@ public class S_playerChaser : MonoBehaviour
     private Coroutine wanderingCoroutine;
     private float distanceToPlayer;
 
+    public Animator charaAnimator;
+
     void Start()
     {
         originalSpeed = agent.speed;
@@ -68,6 +70,10 @@ public class S_playerChaser : MonoBehaviour
             StartCoroutine(SlowDownBeforeStopping());
         }
         if (player != null) checkMinimuPlayerDistance();
+        if (agent.remainingDistance > 0.1f)
+            charaAnimator.SetBool("Move", true);
+        else
+            charaAnimator.SetBool("Move", false);
     }
 
     private void checkMinimuPlayerDistance()
