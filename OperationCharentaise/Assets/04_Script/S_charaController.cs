@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -95,7 +94,7 @@ public class S_charaController : MonoBehaviour
                     noiseFactor = 0.2f;
                     break;
                 case "Tile":
-                    frictionFactor = 0.9f;
+                    frictionFactor = 0.7f;
                     noiseFactor = 1.8f; 
                     break;
                 case "Lino":
